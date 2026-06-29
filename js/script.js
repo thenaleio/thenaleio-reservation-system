@@ -391,37 +391,71 @@ document.getElementById('prevWeekBtn').addEventListener('click', () => {
 });
 
 document.getElementById('nextWeekBtn').addEventListener('click', () => {
-  if (currentWeek < 5) { currentWeek++; updateDisplay(); }
+  if (currentWeek < 6) { currentWeek++; updateDisplay(); } // 最大6週目まである月への対応
 });
 
-// 日付からその月の「第何週か」を算出
+// 【修正】日付からその月の「第何週か」を正確に算出（月またぎのバグ防止）
 function getWeekOfMonth(date) {
-  const day = date.getDate();
-  const dayOfWeek = date.getDay();
-  const daysSinceMonday = (dayOfWeek === 0) ? 6 : dayOfWeek - 1;
-  const mondayDate = day - daysSinceMonday;
-  return Math.ceil(mondayDate / 7);
+  const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
+  const firstDayOfWeek = firstDate.getDay();
+  const diff = firstDayOfWeek === 0 ? -6 : 1 - firstDayOfWeek;
+  const week1Monday = new Date(date.getFullYear(), date.getMonth(), 1 + diff);
+  
+  const diffTime = date.getTime() - week1Monday.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  
+  return Math.floor(diffDays / 7) + 1;
+}
+
+// 【新規追加】指定した週の「<第O週 月/日〜月/日>」テキストを自動生成する関数
+function getWeekDateString(weekIndex) {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+
+  // 今月1日の曜日を取得して、第1週の月曜日を計算
+  const firstDate = new Date(year, month, 1);
+  const firstDayOfWeek = firstDate.getDay();
+  const diff = firstDayOfWeek === 0 ? -6 : 1 - firstDayOfWeek;
+  const week1Monday = new Date(year, month, 1 + diff);
+
+  // 表示したい週の月曜日と日曜日を計算
+  const targetMonday = new Date(week1Monday);
+  targetMonday.setDate(week1Monday.getDate() + (weekIndex - 1) * 7);
+
+  const targetSunday = new Date(targetMonday);
+  targetSunday.setDate(targetMonday.getDate() + 6);
+
+  // 月と日を取り出す
+  const startText = `${targetMonday.getMonth() + 1}/${targetMonday.getDate()}`;
+  const endText = `${targetSunday.getMonth() + 1}/${targetSunday.getDate()}`;
+
+  // <第1週 6/1~6/7> の形で返す
+  return `第${weekIndex}週　${startText} 〜 ${endText}`;
 }
 
 // ▼ 唯一の updateDisplay 関数 ▼
 function updateDisplay() {
-  document.getElementById('weekLabel').textContent = `第${currentWeek}週`;
+  // ★ここで「第◯週」から「<第O週 O/OO~O/OO>」に文字を差し替え
+  document.getElementById('weekLabel').textContent = getWeekDateString(currentWeek);
   
   clearCalendar();
   if (window.currentAllReservations) {
-    const todayStr = formatDate(new Date()); // 今日の日付
+    const todayStr = formatDate(new Date()); 
+    const currentMonth = new Date().getMonth(); // 今の月
 
     for (const key in window.currentAllReservations) {
       const reserveData = { ...window.currentAllReservations[key], key: key };
       
-      // ▼ ここをコメントアウト解除して復活させる ▼
+      // 過去の予約データは削除
       if (reserveData.date < todayStr) {
         remove(ref(db, `reservations/${key}`));
         continue; 
       }
       
       const d = new Date(reserveData.date);
-      if (getWeekOfMonth(d) === currentWeek) {
+      // ★今の月の予約、かつ、表示している週番号と一致するものだけ表示
+      if (d.getMonth() === currentMonth && getWeekOfMonth(d) === currentWeek) {
         reflectToCalendar(reserveData);
       }
     }

@@ -107,8 +107,17 @@ dialog {
 
 #calendar_nav {
   display: none;
+  padding-right: 20px;
   text-align: right;
   font-size: 17px;
+}
+
+#prevWeekBtn, #nextWeekBtn {
+  font-size: 17px;
+}
+
+#weekLabel {
+  padding: 0px 10px; 
 }
 
 #reservation_table {
