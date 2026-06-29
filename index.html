@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UT  8">
+  <link rel="stylesheet" href="css/style.css">    
+  <title>ナレオ枠表  ver.1.1</title>
+</head>
+
+<body>
+  <header>
+    <div id="header_container">
+      <h1 id="header_left">ナレオ枠表</h1>
+      <div id="header_right">
+        <a href="https://www.waseda.jp/inst/student/assets/uploads/2026/01/AY2026_StudentCenterClosedDays.pdf"
+          target="_blank" rel="noopener noreferrer">休館日'26</a>              
+        <a href="https://docs.google.com/spreadsheets/d/1_lNWK66_Vi4x04eMYK6PkBq3ALtAnRU5OrFY7b681KQ/edit?usp=sharing"
+          target="_blank" rel="noopener noreferrer">機材リスト</a>              
+        <a href="https://drive.google.com/drive/folders/1y50_ESU4zPYflFjiwoEYd36KFGgMjouR?usp=sharing"
+          target="_blank" rel="noopener noreferrer">楽譜リスト</a>
+        <a href="https://forms.gle/uAAKmspTQFx7vYWQ7"
+          target="_blank" rel="noopener noreferrer">目安箱</a>              
+        <button type="button" id="startReserveBtn">予約する</button> <!-- 予約ボタン -->
+      </div>
+    </div>
+  </header>
+
+  <main id="reservation-app">
+  <!-- テキスト部分（リンク、ルールなど） -->
+  <div id="reservation-texts">
+    <!--ルール-->
+    <div id="text_rules">
+        <h4>【部室利用時のルール】</h4>
+        <ul>
+        <li>ナレオの部室所有日は火・木・土・日（偶数週）　それ以外の曜日を希望する時は三役にDMで相談すること</li>
+        <li>機材の所有者と使い方は、機材リストを見て確認すること</li>
+        <li>部室の機材は元の状態に戻す（電源を切る、元の場所に戻すetc…）</li>
+        <li>ゴミは絶対に放置せず、部室内か学館廊下のゴミ箱に捨てること</li>
+        <li>部員でない者からの学生証の貸し借りはしないこと（機材紛失・部室内のトラブル防止のため）</li>
+        <li>他サーと部室を共有しているため、紛失のリスクから私物を置いておくことはあまり推奨できないです。ご了承ください。</li>
+        </ul>
+    </div>
+  </div>
+
+  <!-- 予約システム -->
+  <div id="calendar-container">
+    <!-- 1.ローディング画面 -->
+    <div id="loading_message" style="text-align: center; margin: 40px 0; font-size: 18px; color: #666;">
+      予約データを読み込み中...
+    </div>
+    <!-- 2.週切り替え -->
+    <div id="calendar_nav">
+      <button id="prevWeekBtn">&lt;</button>
+      <span id="weekLabel" >第1週</span>
+      <button id="nextWeekBtn">&gt;</button>
+    </div>
+    <!-- 3.週毎の予約カレンダー表 -->
+    <table border="1" id="reservation_table" style="display: none;">
+      <thead> <!-- 列名 -->
+        <tr>
+          <th></th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th><th>日</th>
+        </tr>   
+      </thead>
+      <tbody> <!-- 行名とデータ欄 -->
+        <tr><th>8-10時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th>10-12時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th>12-14時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>           
+        <tr><th>14-16時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr> 
+        <tr><th>16-18時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>     
+        <tr><th>18-20時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr> 
+        <tr><th>20-22時</th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>      
+      </tbody>
+    </table>
+  </div>
+    
+  <!-- ダイアログ -->
+  <div id="dialog-container">
+    <!-- 1. 予約入力ダイアログ -->
+    <dialog id="reserveDialog">
+        <form id="reserveForm">
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <th class="form-item">サークル名</th>
+                <td>
+                  <select name="circle" required>
+                    <option value="">選択してください</option>
+                    <option value="ナレオ">ナレオ</option>
+                    <option value="ダンモ">ダンモ</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th class="form-item">バンド名or個人名</th>
+                <td><input type="text" name="name"></td>
+              </tr>
+              <tr>
+                <th class="form-item">内容</th>
+                <td>
+                  <select name="content" required>
+                    <option value="">選択してください</option>
+                    <option value="バンド練">バンド練</option>
+                    <option value="セッション">セッション</option>
+                    <option value="個人練">個人練</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th class="form-item">枠の日付, 時間</th>
+                <td>
+                  <input type="date" id="reserveDate" name="date" required>
+                  <select id="reserveTime" name="time" required>
+                    <option value="">選択してください</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th class="form-item">備考</th>
+                <td><textarea name="memo" rows="2" placeholder="13:30~15:00/ボンゴ使用"></textarea></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="btn-group" style="text-align: center; margin-top: 15px;">
+            <button type="button" id="backToMainBtn">戻る</button>
+            <button type="submit" id="confirmBtn">確認</button>
+          </div>
+        </form>
+    </dialog>
+
+    <!-- 2. 確認ダイアログ -->
+    <dialog id="confirmDialog">
+    <h2>入力内容の確認</h2>
+    <div id="confirmData"></div>
+    <p><strong>以上の内容で予約しますか？</strong></p>
+    <div class="btn-group">
+        <button type="button" id="backToReserveBtn">戻る</button>
+        <button type="button" id="finalSubmitBtn">予約する</button>
+    </div>
+    </dialog>
+
+    <!-- 3. 完了ダイアログ -->
+    <dialog id="completeDialog">
+    <h2>予約しました</h2>
+    <p>予約手続きが正常に完了しました。</p>
+    <div class="btn-group">
+        <button type="button" id="closeCompleteBtn" style="width: 100%;">閉じる</button>
+    </div>
+    </dialog>
+
+    <!-- A. 予約詳細：編集、削除用 -->
+    <dialog id="detailDialog">
+      <h2>予約詳細</h2>
+      <div id="detailContent"></div>
+      <div class="btn-group" style="margin-top: 15px;">
+        <button type="button" onclick="document.getElementById('detailDialog').close()">閉じる</button>
+        <button type="button" id="editReserveBtn">編集</button>
+        <button type="button" id="deleteReserveBtn" style="color: red;">取り消し</button>
+      </div>
+    </dialog>
+
+    <!-- B. 編集用ログ -->
+    <dialog id="editDialog">
+      <h2>備考の編集</h2>
+      <textarea id="editMemo" rows="3" style="width: 100%;"></textarea>
+      <div class="btn-group" style="margin-top: 15px;">
+        <button type="button" onclick="document.getElementById('editDialog').close()">キャンセル</button>
+        <button type="button" id="saveEditBtn">保存</button>
+      </div>
+    </dialog>
+  </div>
+
+  </main>
+  
+  <footer>
+    <div id="footer_container">
+    <p>Copyright: The Naleio　2026/06/29</p>
+    </div>
+  </footer>
+  <!-- 外部JavaScriptファイルの読み込み -->
+  <script type="module" src="js/script.js"></script>
+</body>
+
+</html>

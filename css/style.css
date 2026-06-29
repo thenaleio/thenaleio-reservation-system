@@ -1,0 +1,200 @@
+/* --- 【色の設定パレット】 --- */
+:root {
+  --main-bg: #f6f6f6;          /* サイトの背景色 */
+  --header-btn: #ddd;          /* ヘッダーボタンの色 */
+  --header-btn-hover: #bbb;    /* ヘッダーボタンをホバーした時の色 */
+  --td-hover: #e9ecef;         /* セルをホバーした時の色 */
+  --reservation-bg: #f0f0f0;   /* 予約ブロックの背景色 */
+  --margin-items: 0px auto;
+  --width-items: 95%;
+}
+
+a {
+  text-decoration: none; /* 初期状態で下線を消す場合 */
+  transition: color 0.2s ease;
+}
+
+/* 追加：すべての要素で、paddingやborderを幅の中に含める（はみ出し防止） */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "メイリオ", sans-serif;
+  background-color: var(--main-bg);
+  max-width: 1350px;
+  margin: var(--margin-items);           /* デフォルトの余白を消し、中央揃えに */
+}
+
+#header_container {
+  margin: 10px auto;
+  padding: 0px 5px;
+  width: var(--width-items);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* ★追加：画面が狭いときは折り返す */
+  gap: 15px;       /* ★追加：折り返したときの上下の隙間 */
+}
+
+#header_right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap; /* ★追加：リンク同士も狭ければ折り返す */
+  justify-content: flex-end; /* ★追加：折り返しても右寄せをキープする */
+}
+
+header h1 {
+  font-size: 24px;                   /* タイトルの大きさ（お好みで） */
+}
+
+header button {
+  padding: 10px 40px;
+  font-size: 20px;
+
+  border: none;             /* 枠線を消す */
+  box-shadow: none;         /* 影を消す */
+  background-image: none;   /* グラデーションを消す */
+  
+  background-color: var(--header-btn); /* 色は先ほど設定した変数を使います */
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+main{
+  margin: var(--margin-items);
+  align-items: center;
+  width: var(--width-items);
+  min-height: 80vh;
+}
+
+#reservation-texts {
+  padding: 10px 0px 0px;
+}
+
+#reservation-texts h4 {
+  margin-top: 0px;
+  margin-bottom: 10px; /* 見出しと下のリストとの間隔 */
+  font-size: 18px;
+}
+
+#reservation-texts ul {
+  padding-left: 20px; /* 行頭の黒丸から左の余白 */
+}
+
+#reservation-texts ul li{ 
+  padding-bottom: 5px;
+}
+
+dialog {
+  margin: auto;              /* ★autoに変更（画面中央に配置するため） */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  background: #ffffff;
+}
+
+/* ダイアログ内のボタンを一括で大きくする */
+.btn-group button {
+  padding: 5px 10px;   /* 上下の余白を広げてボタンを縦に大きくする */
+  font-size: 12px;      /* 文字を少し大きくする */
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+#calendar_nav {
+  display: none;
+  text-align: right;
+  font-size: 17px;
+}
+
+#reservation_table {
+  display: table;
+  text-indent: initial;
+  box-sizing: border-box;
+  border-collapse: collapse;
+  line-height: 1.5;
+  font-size: 20px;
+  width: 100%;
+  /* table-layout: fixed; */ /* ★追加：列の幅を均等に固定し、文字による拡張を防ぐ */
+}
+
+/* ★追加：セルの設定を一括で行う */
+#reservation_table th, #reservation_table td {
+  border: 1px solid #ccc;
+  vertical-align: top; /* 文字や予約ブロックをセルの上から詰めて配置する */
+  word-wrap: break-word; /* 長いテキストが来たらセル幅に合わせて改行させる */
+  overflow-wrap: break-word;
+}
+
+/* ★追加：セルに「幅の制限」を設ける */
+#reservation_table td {
+  min-width: 100px; /* 小さくなりすぎない最小幅 */
+  max-width: 250px; /* ★ここが制限！予約がたくさん入ってもこれ以上は広がらない */
+}
+
+/* 時間帯の列（th:first-child）は固定幅を維持 */
+#reservation_table th:first-child {
+  width: 120px;
+  text-align: center;
+  background-color: #f8f9fa;
+}
+
+/* 予約するボタンなど、強調したいボタンに色をつける（お好みで） */
+#confirmBtn, #finalSubmitBtn, #saveEditBtn {
+  background-color: #007bff; /* 青色ベース */
+  color: white;
+  border: none;
+}
+
+/* 左端の列（時間帯）の幅と見た目を調整 */
+#reservation_table th:first-child {
+  width: 120px; 
+  text-align: center;
+  background-color: #f8f9fa; 
+}
+
+/* 反映された予約情報だけに適用されるスタイル */
+.reservation-item {
+  font-size: 15px;      /* 文字の大きさ（好みに合わせて変更してください） */
+  text-align: center;   /* 中央寄せ */
+  
+  /* ▼ 以下は見やすくするための装飾（不要なら消してOKです） ▼ */
+  background-color: var(--reservation-bg); 
+  margin-bottom: 2px;        /* 複数の予約が並んだときの隙間 */
+  padding: 4px;              /* 内側の余白 */
+  border-radius: 4px;        /* 角を少し丸くする */
+  line-height: 1.2;          /* 行間を少し詰める */
+  word-break: break-all;     /* 長い文字を枠内で折り返す */
+}
+
+#footer_container {
+  line-height: 0.5em;
+  font-size: 15px;
+  padding: 5px 5px;
+  width: var(--margin-items);
+  text-align: center;
+}
+
+
+/* ========================================== */
+/* ▼ ホバー設定 ▼                               */
+/* ========================================== */
+a:hover {
+  text-decoration: underline; /* ホバーした時に下線を出す */
+}
+
+button:hover, 
+.reservation-item:hover, 
+#reservation_table td:hover {
+  cursor: pointer;
+  filter: brightness(90%);
+  transition: background-color 0.2s ease;
+}
+
+#reservation_table td:hover {
+  background-color: var(--td-hover);
+}
