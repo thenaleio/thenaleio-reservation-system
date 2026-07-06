@@ -43,6 +43,9 @@ const backToReserveBtn = document.getElementById('backToReserveBtn');
 const finalSubmitBtn = document.getElementById('finalSubmitBtn');
 const closeCompleteBtn = document.getElementById('closeCompleteBtn');
 const saveEditBtn = document.getElementById('saveEditBtn');
+const rulesDialogBtn = document.getElementById('rulesDialogBtn');
+const rulesDialog = document.getElementById('rulesDialog');
+const closeRulesBtn = document.getElementById('closeRulesBtn');
 
 let currentSelectedKey = null; // 現在開いている予約のIDを保持
 
@@ -148,6 +151,19 @@ function setupDateTimeRestrictions() {
 }
 
 // ==========================================
+// ▼ ルール詳細 ダイアログの開閉 ▼
+// ==========================================
+// 「詳細ルール」ボタン -> ダイアログを中央で開く
+rulesDialogBtn.addEventListener('click', () => {
+  showCentered(rulesDialog);
+});
+
+// 「閉じる」ボタン -> ダイアログを閉じる
+closeRulesBtn.addEventListener('click', () => {
+  rulesDialog.close();
+});
+
+// ==========================================
 // ▼ 追加：サークルの所有日（曜日・週）のバリデーション ▼
 // ==========================================
 const circleSelect = document.querySelector('select[name="circle"]');
@@ -181,7 +197,7 @@ function validateDateRule() {
 
   // ルール外の日付だった場合、警告を出して日付の入力をリセットする
   if (!isValid) {
-    alert(`${selectedCircle}の所有日ではありません。\n予約可能な曜日を確認してください。`);
+    alert(`${selectedCircle}の所有日ではありません。\n申請するには幹部へ相談してください。`);
     reserveDate.value = ''; // 入力された日付を空にする
   }
 }
@@ -194,7 +210,7 @@ reserveDate.addEventListener('change', validateDateRule);
 // 1. 「予約する」ボタンクリック -> 2のダイアログを開く
 startReserveBtn.addEventListener('click', () => {
   reserveForm.reset(); // フォームをクリア
-  reserveDialog.showModal();
+  showCentered(reserveDialog);
 });
 
 // 2. 「戻る」ボタン -> 元のページに戻る（ダイアログを閉じる）
@@ -222,13 +238,13 @@ reserveForm.addEventListener('submit', (event) => {
   `;
 
   reserveDialog.close();
-  confirmDialog.showModal();
+  showCentered(confirmDialog);
 });
 
 // 3. 「戻る」ボタン -> 2のダイアログに戻る
 backToReserveBtn.addEventListener('click', () => {
   confirmDialog.close();
-  reserveDialog.showModal(); // 入力内容は保持されたまま開きます
+  showCentered(reserveDialog); // 入力内容は保持されたまま開きます
 });
 
 // 3. 「予約する」ボタン -> データベースに保存し、表に反映して4のダイアログへ
@@ -373,6 +389,7 @@ document.getElementById('deleteReserveBtn').addEventListener('click', () => {
     alert("予約を取り消しました。");
   }
 });
+
 
 
 // ==========================================

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- ver 1.0.2 -->
+  <!-- ver 1.0.3 -->
   <meta charset="UTF-8">
   <link rel="stylesheet" href="css/style.css">    
   <title>ナレオ枠表</title> 
@@ -20,7 +20,8 @@
         <a href="https://drive.google.com/drive/folders/1y50_ESU4zPYflFjiwoEYd36KFGgMjouR?usp=sharing"
           target="_blank" rel="noopener noreferrer">楽譜リスト</a>
         <a href="https://forms.gle/uAAKmspTQFx7vYWQ7"
-          target="_blank" rel="noopener noreferrer">目安箱</a>              
+          target="_blank" rel="noopener noreferrer">目安箱</a>
+        <button type="button" id="rulesDialogBtn">ガイドライン</button>              
         <button type="button" id="startReserveBtn">予約する</button> <!-- 予約ボタン -->
       </div>
     </div>
@@ -168,13 +169,49 @@
         <button type="button" id="saveEditBtn">保存</button>
       </div>
     </dialog>
+
+    <!-- C. 詳細ルールログ -->
+    <dialog id="rulesDialog">
+      <div id="rulesDialog_container">
+        <div id="rulesDialog_header">
+          <h2>部室利用ガイドライン</h2>
+        </div>    
+        <div id="rulesDialog_texts">
+        <p>ナレオの部室は、モダンジャズ研究会（以下、ダンモ）と共用です。双方が快適に利用できるよう、以下のルールを遵守してください。</p>
+          <div><h4>利用日・予約</h4>
+          <p>利用するには必ずこのサイトで事前予約をしてください（先着順）
+            <br>・ナレオ所有日：火、木、土、日（偶数週）
+            <br>・ダンモ所有日：月、水、金、日（奇数週）
+            <br>サイトでは「当月中のナレオ所有日」のみ予約可能です。もしダンモ所有日に申請したい場合は、三役に相談してください。
+            <br>＊学館休館日は部室の鍵を借りれません！事前に確認しておきましょう！
+          </p>
+          </div>
+          <div><h4>機材の取り扱い</h4>
+            <p>部室内にはナレオとダンモの機材が混在しています。
+              <br>初めて利用する際には、事前に機材リストを確認してください。共用物、使用禁止機材が定められています。
+              <br>・ダンモから許可を得ているもの以外は使用禁止です。
+              <br>・アンプ類、ミキサー等は電源を切る前に全ての目盛りをゼロにし、元の場所へ片付けてください。
+              <br>・部室は常に綺麗な状態を保ちましょう。ゴミは必ず部室内または外（学館廊下等）の指定場所に捨ててください。
+              <br>扱いが不明な場合は、必ず三役に相談してください。
+            </p>
+          </div>
+          <div><h4>困ったことがあれば</h4>
+            <p>相談・改善して欲しいことあれば遠慮なく目安箱に投げてください。DMでもいいです
+            </p>
+          </div>
+        </div>
+        <div class="btn-group" style="margin-top: 15px;">
+          <button type="button" id="closeRulesBtn" style="width: 100%;">閉じる</button>
+        </div>
+      </div>
+    </dialog>
   </div>
 
   </main>
   
   <footer>
     <div id="footer_container">
-    <p>Copyright: The Naleio　2026/06/29</p>
+    <p>Copyright: The Naleio　2026/07/06</p>
     </div>
   </footer>
   <!-- 外部JavaScriptファイルの読み込み -->

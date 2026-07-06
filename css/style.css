@@ -14,6 +14,12 @@ a {
   transition: color 0.2s ease;
 }
 
+h4 {
+  margin-top: 0px;
+  margin-bottom: 10px; /* 見出しと下のリストとの間隔 */
+  font-size: 18px;
+}
+
 /* 追加：すべての要素で、paddingやborderを幅の中に含める（はみ出し防止） */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -40,7 +46,7 @@ body {
 #header_right {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 25px;
   flex-wrap: wrap; /* ★追加：リンク同士も狭ければ折り返す */
   justify-content: flex-end; /* ★追加：折り返しても右寄せをキープする */
 }
@@ -50,9 +56,6 @@ header h1 {
 }
 
 header button {
-  padding: 10px 40px;
-  font-size: 20px;
-
   border: none;             /* 枠線を消す */
   box-shadow: none;         /* 影を消す */
   background-image: none;   /* グラデーションを消す */
@@ -61,6 +64,16 @@ header button {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+}
+
+#startReserveBtn {
+  padding: 10px 40px;
+  font-size: 20px;
+}
+
+#rulesDialogBtn {
+  padding: 5px 15px;
+  font-size: 15px;
 }
 
 main{
@@ -74,23 +87,33 @@ main{
   padding: 10px 0px 0px;
 }
 
-#reservation-texts h4 {
-  margin-top: 0px;
-  margin-bottom: 10px; /* 見出しと下のリストとの間隔 */
-  font-size: 18px;
+#rulesDialog_header {
+  margin: 0px auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* ★追加：画面が狭いときは折り返す */
+  gap: 15px;       /* ★追加：折り返したときの上下の隙間 */
 }
 
-#reservation-texts ul {
+#rulesDialog_texts h4 {
+  margin-bottom: 7px; /* 見出しと下のリストとの間隔 */
+}
+
+#reservation-texts ul, #rulesDialog_texts p {
+  margin-top: 0px;
   padding-left: 20px; /* 行頭の黒丸から左の余白 */
 }
 
-#reservation-texts ul li{ 
+#reservation-texts ul li, #rulesDialog_texts p{ 
   padding-bottom: 5px;
 }
 
 dialog {
   margin: auto;              /* ★autoに変更（画面中央に配置するため） */
   border: none;
+  max-height: 90vh;
+  overflow-y: auto;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.3);
   background: #ffffff;
