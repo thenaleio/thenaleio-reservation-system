@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <!-- ver 1.0.3 -->
+  <!-- ver 1.1.0 -->
   <meta charset="UTF-8">
   <link rel="stylesheet" href="css/style.css">    
   <title>ナレオ枠表</title> 
@@ -36,7 +36,7 @@
         <ul>
         <li>ナレオの部室所有日は火・木・土・日（偶数週）　それ以外の曜日を希望する時は三役にDMで相談すること</li>
         <li>機材の所有者と使い方は、機材リストを見て確認すること</li>
-        <li>部室の機材は元の状態に戻す（電源を切る、元の場所に戻すetc…）</li>
+        <li>部室の機材は元の状態に戻す（電源を切る、元の場所に戻すetc…）戸締り消灯もしっかりと</li>
         <li>ゴミは絶対に放置せず、部室内か学館廊下のゴミ箱に捨てること</li>
         <li>部員でない者からの学生証の貸し借りはしないこと（機材紛失・部室内のトラブル防止のため）</li>
         <li>他サーと部室を共有しているため、紛失のリスクから私物を置いておくことはあまり推奨できないです。ご了承ください。</li>
@@ -104,6 +104,8 @@
                     <option value="バンド練">バンド練</option>
                     <option value="セッション">セッション</option>
                     <option value="個人練">個人練</option>
+                    <option value="設営">設営</option>
+                    <option value="その他">その他</option>
                   </select>
                 </td>
               </tr>
@@ -162,12 +164,38 @@
 
     <!-- B. 編集用ログ -->
     <dialog id="editDialog">
-      <h2>備考の編集</h2>
-      <textarea id="editMemo" rows="3" style="width: 100%;"></textarea>
-      <div class="btn-group" style="margin-top: 15px;">
-        <button type="button" onclick="document.getElementById('editDialog').close()">キャンセル</button>
-        <button type="button" id="saveEditBtn">保存</button>
-      </div>
+      <h2>予約内容の編集</h2>
+      <form id="editForm">
+        <table class="form-table">
+          <tbody>
+            <tr>
+              <th class="form-item">バンド名or個人名</th>
+              <td><input type="text" id="editName" name="name"></td>
+            </tr>
+            <tr>
+              <th class="form-item">内容</th>
+              <td>
+                <select id="editContent" name="content" required>
+                  <option value="">選択してください</option>
+                  <option value="バンド練">バンド練</option>
+                  <option value="セッション">セッション</option>
+                  <option value="個人練">個人練</option>
+                  <option value="設営">設営</option>
+                  <option value="その他">その他</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <th class="form-item">備考</th>
+              <td><textarea id="editMemo" name="memo" rows="2"></textarea></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="btn-group" style="text-align: center; margin-top: 15px;">
+          <button type="button" onclick="document.getElementById('editDialog').close()">キャンセル</button>
+          <button type="button" id="saveEditBtn">保存</button>
+        </div>
+      </form>
     </dialog>
 
     <!-- C. 詳細ルールログ -->
