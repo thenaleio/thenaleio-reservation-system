@@ -366,18 +366,37 @@ document.getElementById('reservation_table').addEventListener('click', (e) => {
 // 1.「編集」ボタンが押されたら編集ダイアログを開く
 document.getElementById('editReserveBtn').addEventListener('click', () => {
   const data = window.currentAllReservations[currentSelectedKey];
-  editMemo.value = data.memo || ''; // 現在の備考をセット
+  
+  // 既存のデータをそれぞれの入力欄にセットする
+  document.getElementById('editName').value = data.name || '';
+  document.getElementById('editContent').value = data.content || '';
+  document.getElementById('editMemo').value = data.memo || ''; 
+  
   detailDialog.close();
   showCentered(editDialog);
 });
 
 // 2.「保存」ボタンが押されたらFirebaseを更新
 saveEditBtn.addEventListener('click', () => {
+  // 入力された値を取得
+  const newName = document.getElementById('editName').value;
+  const newContent = document.getElementById('editContent').value;
+  const newMemo = document.getElementById('editMemo').value;
+
+  // 「内容」は必須なのでチェック
+  if (!newContent) {
+    alert("内容を選択してください。");
+    return;
+  }
+
+  // Firebaseのデータを上書き更新（名前と内容も追加）
   update(ref(db, `reservations/${currentSelectedKey}`), {
-    memo: editMemo.value
+    name: newName,
+    content: newContent,
+    memo: newMemo
   }).then(() => {
     editDialog.close();
-    alert("備考を更新しました");
+    alert("予約内容を更新しました");
   });
 });
 
