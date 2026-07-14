@@ -183,7 +183,10 @@ function validateDateRule() {
 
   let isValid = false;
 
-  if (selectedCircle === 'ナレオ') {
+  if (selectedCircle === '枠管') {
+    // ★追加：枠管はすべての曜日・週で予約可能とする
+    isValid = true;
+  } else if (selectedCircle === 'ナレオ') {
     // ナレオ：火(2)、木(4)、土(6)、日(0)の偶数週
     if ([2, 4, 6].includes(dayOfWeek) || (dayOfWeek === 0 && weekOfMonth % 2 === 0)) {
       isValid = true;
